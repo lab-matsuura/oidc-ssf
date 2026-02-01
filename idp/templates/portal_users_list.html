@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>Users</h1>
+                <div>
+                    <span class="text-muted">{{.TotalUsers}} total users</span>
+                    <a href="/portal/users/create" class="btn btn-primary" style="margin-left: 15px;">Create User</a>
+                </div>
+            </div>
+
+            {{if .Message}}
+            <div class="alert alert-success">{{.Message}}</div>
+            {{end}}
+
+            <div class="card mb-3">
+                <form method="GET" action="/portal/users" style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" name="q" placeholder="Search by username, email, or name" value="{{.Search}}" style="flex: 1;">
+                    <select name="status">
+                        <option value="">All Status</option>
+                        <option value="active" {{if eq .StatusFilter "active"}}selected{{end}}>Active</option>
+                        <option value="suspended" {{if eq .StatusFilter "suspended"}}selected{{end}}>Suspended</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    {{if or .Search .StatusFilter}}
+                    <a href="/portal/users" class="btn btn-outline">Clear</a>
+                    {{end}}
+                </form>
+            </div>
+
+            <table class="portal-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Display Name</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Last Login</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Users}}
+                    <tr>
+                        <td><strong>{{.Username}}</strong></td>
+                        <td>
+                            {{.Email}}
+                            {{if .EmailVerified}}
+                            <span class="badge badge-success">Verified</span>
+                            {{end}}
+                        </td>
+                        <td>{{.DisplayName}}</td>
+                        <td>
+                            {{if eq .Role "owner"}}
+                            <span class="badge badge-danger">Owner</span>
+                            {{else if eq .Role "admin"}}
+                            <span class="badge badge-warning">Admin</span>
+                            {{else}}
+                            <span class="badge badge-light">User</span>
+                            {{end}}
+                        </td>
+                        <td>
+                            {{if eq .AccountStatus "active"}}
+                            <span class="badge badge-success">Active</span>
+                            {{else if eq .AccountStatus "suspended"}}
+                            <span class="badge badge-danger">Suspended</span>
+                            {{else}}
+                            <span class="badge badge-secondary">{{.AccountStatus}}</span>
+                            {{end}}
+                        </td>
+                        <td>{{if .LastLoginAt}}{{.LastLoginAt}}{{else}}<span class="text-muted">Never</span>{{end}}</td>
+                        <td>
+                            <a href="/portal/users/{{.ID}}" class="btn btn-sm btn-outline">View</a>
+                        </td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">No users found.</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+            {{if .ShowPagination}}
+            <div class="pagination">
+                {{if .HasPrevPage}}
+                <a href="/portal/users?page={{.PrevPage}}{{if .Search}}&q={{.Search}}{{end}}{{if .StatusFilter}}&status={{.StatusFilter}}{{end}}">&laquo; Previous</a>
+                {{end}}
+
+                {{range $page := .Pages}}
+                {{if eq $page $.CurrentPage}}
+                <span class="active">{{$page}}</span>
+                {{else}}
+                <a href="/portal/users?page={{$page}}{{if $.Search}}&q={{$.Search}}{{end}}{{if $.StatusFilter}}&status={{$.StatusFilter}}{{end}}">{{$page}}</a>
+                {{end}}
+                {{end}}
+
+                {{if .HasNextPage}}
+                <a href="/portal/users?page={{.NextPage}}{{if .Search}}&q={{.Search}}{{end}}{{if .StatusFilter}}&status={{.StatusFilter}}{{end}}">Next &raquo;</a>
+                {{end}}
+            </div>
+            {{end}}
+        </main>
+    </div>
+</body>
+</html>

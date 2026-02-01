@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>My Profile</h1>
+            </div>
+
+            {{if .Success}}
+            <div class="alert alert-success">{{.Success}}</div>
+            {{end}}
+            {{if .Error}}
+            <div class="alert alert-danger">{{.Error}}</div>
+            {{end}}
+
+            <div class="card">
+                <h2>Account Information</h2>
+                <div class="info-grid">
+                    <div class="info-label">Username</div>
+                    <div class="info-value">{{.User.Username}}</div>
+
+                    <div class="info-label">Email</div>
+                    <div class="info-value">
+                        {{.User.Email}}
+                        {{if .User.EmailVerified}}
+                        <span class="badge badge-success">Verified</span>
+                        {{else}}
+                        <span class="badge badge-warning">Not Verified</span>
+                        {{end}}
+                    </div>
+
+                    <div class="info-label">Display Name</div>
+                    <div class="info-value">{{.DisplayName}}</div>
+
+                    <div class="info-label">Role</div>
+                    <div class="info-value">
+                        {{if eq .User.Role "owner"}}
+                        <span class="badge badge-info">Owner</span>
+                        {{else if eq .User.Role "admin"}}
+                        <span class="badge badge-info">Admin</span>
+                        {{else}}
+                        <span class="badge badge-secondary">User</span>
+                        {{end}}
+                    </div>
+
+                    <div class="info-label">Account Status</div>
+                    <div class="info-value">
+                        {{if eq .User.AccountStatus "active"}}
+                        <span class="badge badge-success">Active</span>
+                        {{else if eq .User.AccountStatus "suspended"}}
+                        <span class="badge badge-warning">Suspended</span>
+                        {{else}}
+                        <span class="badge badge-secondary">{{.User.AccountStatus}}</span>
+                        {{end}}
+                    </div>
+
+                    <div class="info-label">Member Since</div>
+                    <div class="info-value">{{.CreatedAt}}</div>
+
+                    <div class="info-label">Last Login</div>
+                    <div class="info-value">{{.LastLogin}}</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Edit Profile</h2>
+                <form method="POST" action="/portal/profile/display-name">
+                    <div class="form-group">
+                        <label for="display_name">Display Name</label>
+                        <input type="text" id="display_name" name="display_name" value="{{if .User.DisplayName}}{{.User.DisplayName}}{{end}}" placeholder="Enter your display name">
+                        <small class="text-muted" style="display: block; margin-top: 5px;">Leave empty to use your username</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Display Name</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Login History</h2>
+                {{if .Sessions}}
+                <div style="overflow-x: auto;">
+                    <table class="table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 12px 8px; text-align: left; white-space: nowrap;">Session</th>
+                                <th style="padding: 12px 8px; text-align: left; white-space: nowrap;">IP Address</th>
+                                <th style="padding: 12px 8px; text-align: left;">Browser / Device</th>
+                                <th style="padding: 12px 8px; text-align: left; white-space: nowrap;">Login Time</th>
+                                <th style="padding: 12px 8px; text-align: left; white-space: nowrap;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .Sessions}}
+                            <tr>
+                                <td style="padding: 10px 8px; white-space: nowrap;">
+                                    <code style="font-size: 0.9em;">{{.ID}}</code>
+                                    {{if .IsCurrent}} <span class="badge badge-info">Current</span>{{end}}
+                                </td>
+                                <td style="padding: 10px 8px; white-space: nowrap;">
+                                    <code style="font-size: 0.9em;">{{if .IPAddress}}{{.IPAddress}}{{else}}-{{end}}</code>
+                                </td>
+                                <td style="padding: 10px 8px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{.UserAgent}}">
+                                    {{if .UserAgent}}{{.UserAgent}}{{else}}-{{end}}
+                                </td>
+                                <td style="padding: 10px 8px; white-space: nowrap;">{{.CreatedAt}}</td>
+                                <td style="padding: 10px 8px; white-space: nowrap;">
+                                    {{if .IsActive}}
+                                    <span class="badge badge-success">Active</span>
+                                    {{else if .RevokedAt}}
+                                    <span class="badge badge-danger">Revoked</span>
+                                    {{else}}
+                                    <span class="badge badge-secondary">Expired</span>
+                                    {{end}}
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+                {{if gt .Pagination.TotalPages 1}}
+                <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee;">
+                    {{if .Pagination.HasPrev}}
+                    <a href="/portal/profile?page={{.Pagination.PrevPage}}" class="btn btn-secondary" style="padding: 6px 12px;">← Prev</a>
+                    {{else}}
+                    <span class="btn btn-secondary" style="padding: 6px 12px; opacity: 0.5; cursor: not-allowed;">← Prev</span>
+                    {{end}}
+                    <span style="color: #666;">Page {{.Pagination.CurrentPage}} / {{.Pagination.TotalPages}}</span>
+                    {{if .Pagination.HasNext}}
+                    <a href="/portal/profile?page={{.Pagination.NextPage}}" class="btn btn-secondary" style="padding: 6px 12px;">Next →</a>
+                    {{else}}
+                    <span class="btn btn-secondary" style="padding: 6px 12px; opacity: 0.5; cursor: not-allowed;">Next →</span>
+                    {{end}}
+                </div>
+                {{end}}
+                {{else}}
+                <p>No login history available.</p>
+                {{end}}
+            </div>
+
+            <div class="card">
+                <h2>Session Management</h2>
+                <p class="text-muted mb-3">
+                    Logging out will terminate your session on this IdP and all connected applications (Single Logout).
+                </p>
+                <a href="/logout" class="btn btn-danger">Logout from All Sessions</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

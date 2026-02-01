@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>Create New Client</h1>
+                <a href="/portal/clients" class="btn btn-outline">Back to List</a>
+            </div>
+
+            {{if .Error}}
+            <div class="alert alert-danger">{{.Error}}</div>
+            {{end}}
+
+            <div class="card">
+                <form method="POST" action="/portal/clients">
+                    <div class="form-group">
+                        <label for="client_id">Client ID *</label>
+                        <input type="text" id="client_id" name="client_id" required pattern="[a-zA-Z0-9_-]+" placeholder="my-application">
+                        <small class="text-muted">Alphanumeric, hyphens, and underscores only</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Redirect URIs *</label>
+                        <div id="redirect-uris">
+                            <div class="mb-3">
+                                <input type="text" name="redirect_uris" placeholder="https://example.com/callback" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="addRedirectUri()">Add URI</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Grant Types *</label>
+                        <div class="form-check">
+                            <input type="checkbox" name="grant_types" value="authorization_code" checked>
+                            <label>Authorization Code</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="grant_types" value="refresh_token" checked>
+                            <label>Refresh Token</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="grant_types" value="client_credentials">
+                            <label>Client Credentials</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Response Types *</label>
+                        <div class="form-check">
+                            <input type="checkbox" name="response_types" value="code" checked>
+                            <label>Code</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="response_types" value="token">
+                            <label>Token</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="response_types" value="id_token">
+                            <label>ID Token</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Scopes *</label>
+                        <div class="form-check">
+                            <input type="checkbox" name="scopes" value="openid" checked>
+                            <label>openid</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="scopes" value="profile" checked>
+                            <label>profile</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="scopes" value="email" checked>
+                            <label>email</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="scopes" value="offline_access">
+                            <label>offline_access</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="scopes" value="ssf:manage">
+                            <label>ssf:manage (SSF stream management)</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" name="public" id="public">
+                            <label for="public">Public Client (no secret required, for native/SPA apps)</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Client</button>
+                </form>
+            </div>
+
+            <script>
+            function addRedirectUri() {
+                const container = document.getElementById('redirect-uris');
+                const div = document.createElement('div');
+                div.className = 'mb-3';
+                div.innerHTML = '<input type="text" name="redirect_uris" placeholder="https://example.com/callback">';
+                container.appendChild(div);
+            }
+            </script>
+        </main>
+    </div>
+</body>
+</html>

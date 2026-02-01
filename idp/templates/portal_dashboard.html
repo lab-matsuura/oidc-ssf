@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>Dashboard</h1>
+            </div>
+
+            <div class="card">
+                <h2>Welcome, {{.DisplayName}}</h2>
+                <p class="text-muted">
+                    You are logged in as <strong>{{.User.Username}}</strong>
+                    {{if eq .User.Role "owner"}}
+                    <span class="badge badge-info">Owner</span>
+                    {{else if eq .User.Role "admin"}}
+                    <span class="badge badge-info">Admin</span>
+                    {{else}}
+                    <span class="badge badge-secondary">User</span>
+                    {{end}}
+                </p>
+            </div>
+
+            {{if .IsAdmin}}
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number">{{.UserCount}}</div>
+                    <div class="label">Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">{{.ClientCount}}</div>
+                    <div class="label">OAuth Clients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">{{.StreamCount}}</div>
+                    <div class="label">SSF Streams</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Quick Actions</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="/portal/clients/new" class="btn btn-primary">Create OAuth Client</a>
+                    <a href="/portal/users/create" class="btn btn-primary">Create User</a>
+                    <a href="/portal/ssf/new" class="btn btn-primary">Create SSF Stream</a>
+                </div>
+            </div>
+            {{else}}
+            <div class="card">
+                <h2>Your Account</h2>
+                <p class="text-muted mb-3">Manage your profile and account settings.</p>
+                <a href="/portal/profile" class="btn btn-primary">Edit Profile</a>
+            </div>
+            {{end}}
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>Create SSF Stream</h1>
+                <a href="/portal/ssf" class="btn btn-outline">Back to List</a>
+            </div>
+
+            <div class="card">
+                <form action="/portal/ssf/new" method="POST">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" name="description" placeholder="e.g., Production RP">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery_method">Delivery Method *</label>
+                        <select id="delivery_method" name="delivery_method" required onchange="toggleEndpointUrl()">
+                            <option value="urn:ietf:rfc:8935">Push (RFC 8935) - IdP pushes events to RP</option>
+                            <option value="urn:ietf:rfc:8936">Poll (RFC 8936) - RP polls for events</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="endpoint_url_group">
+                        <label for="endpoint_url">Receiver Endpoint URL *</label>
+                        <input type="url" id="endpoint_url" name="endpoint_url" placeholder="https://rp.example.com/ssf/receiver">
+                        <small class="text-muted">The URL where SSF events will be sent (HTTP POST)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Event Types to Deliver</label>
+                        <p class="small text-muted">Select which events to send to this receiver. If none selected, all events will be delivered.</p>
+                        {{range .EventTypes}}
+                        <div class="form-check">
+                            <input type="checkbox" id="event_{{.Name}}" name="events_requested" value="{{.URI}}" checked>
+                            <label for="event_{{.Name}}">
+                                <strong>{{.Name}}</strong>
+                                <span class="text-muted small">- {{.Description}}</span>
+                            </label>
+                        </div>
+                        {{end}}
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Create Stream</button>
+                        <a href="/portal/ssf" class="btn btn-outline">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script>
+    function toggleEndpointUrl() {
+        const method = document.getElementById('delivery_method').value;
+        const group = document.getElementById('endpoint_url_group');
+        const input = document.getElementById('endpoint_url');
+        if (method === 'urn:ietf:rfc:8936') {
+            group.style.display = 'none';
+            input.required = false;
+            input.value = '';
+        } else {
+            group.style.display = 'block';
+            input.required = true;
+        }
+    }
+    toggleEndpointUrl();
+    </script>
+</body>
+</html>

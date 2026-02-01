@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>User: {{.TargetUser.Username}}</h1>
+                <a href="/portal/users" class="btn btn-outline">Back to List</a>
+            </div>
+
+            {{if .Updated}}
+            <div class="alert alert-success">User updated successfully!</div>
+            {{end}}
+
+            <div class="card">
+                <h2>User Information</h2>
+                <table class="portal-table">
+                    <tr>
+                        <th style="width: 200px;">User ID</th>
+                        <td><code>{{.TargetUser.ID}}</code></td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{.TargetUser.Username}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>
+                            {{.TargetUser.Email}}
+                            {{if .TargetUser.EmailVerified}}
+                            <span class="badge badge-success">Verified</span>
+                            {{else}}
+                            <span class="badge badge-warning">Not Verified</span>
+                            {{end}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Display Name</th>
+                        <td>{{if .TargetUser.DisplayName}}{{.TargetUser.DisplayName}}{{else}}<span class="text-muted">Not set</span>{{end}}</td>
+                    </tr>
+                    <tr>
+                        <th>Role</th>
+                        <td>
+                            {{if eq .TargetUser.Role "owner"}}
+                            <span class="badge badge-danger">Owner</span>
+                            {{else if eq .TargetUser.Role "admin"}}
+                            <span class="badge badge-warning">Admin</span>
+                            {{else}}
+                            <span class="badge badge-light">User</span>
+                            {{end}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Account Status</th>
+                        <td>
+                            {{if eq .TargetUser.AccountStatus "active"}}
+                            <span class="badge badge-success">Active</span>
+                            {{else if eq .TargetUser.AccountStatus "suspended"}}
+                            <span class="badge badge-danger">Suspended</span>
+                            {{else}}
+                            <span class="badge badge-secondary">{{.TargetUser.AccountStatus}}</span>
+                            {{end}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Created</th>
+                        <td>{{.TargetUser.CreatedAt}}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Updated</th>
+                        <td>{{.TargetUser.UpdatedAt}}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Login</th>
+                        <td>{{if .TargetUser.LastLoginAt}}{{.TargetUser.LastLoginAt}}{{else}}<span class="text-muted">Never</span>{{end}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            {{if .IsOwner}}
+            <div class="card">
+                <h2>Owner Protection</h2>
+                <p class="text-muted" style="margin: 0;">
+                    This is the owner account. Status and role cannot be modified.
+                </p>
+            </div>
+            {{else}}
+            <div class="card">
+                <h2>Change Status</h2>
+                <form method="POST" action="/portal/users/{{.TargetUser.ID}}/status" style="display: flex; gap: 10px; align-items: center;">
+                    <select name="status">
+                        <option value="active" {{if eq .TargetUser.AccountStatus "active"}}selected{{end}}>Active</option>
+                        <option value="suspended" {{if eq .TargetUser.AccountStatus "suspended"}}selected{{end}}>Suspended</option>
+                        <option value="deleted">Deleted</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Change Role</h2>
+                <form method="POST" action="/portal/users/{{.TargetUser.ID}}/role" style="display: flex; gap: 10px; align-items: center;">
+                    <select name="role">
+                        <option value="user" {{if eq .TargetUser.Role "user"}}selected{{end}}>User</option>
+                        <option value="admin" {{if eq .TargetUser.Role "admin"}}selected{{end}}>Admin</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Update Role</button>
+                </form>
+            </div>
+            {{end}}
+        </main>
+    </div>
+</body>
+</html>

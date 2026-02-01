@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>Client Created</h1>
+            </div>
+
+            <div class="alert alert-success">
+                Client <strong>{{.ClientID}}</strong> has been created successfully!
+            </div>
+
+            {{if not .IsPublic}}
+            <div class="secret-box">
+                <strong>Client Secret</strong>
+                <p class="text-muted small">Save this secret now - it will not be shown again!</p>
+                <code id="secret">{{.ClientSecret}}</code>
+                <button type="button" class="btn btn-sm btn-outline mt-3" onclick="copySecret()">Copy to Clipboard</button>
+            </div>
+            {{else}}
+            <div class="alert alert-info">
+                This is a public client - no secret is required.
+            </div>
+            {{end}}
+
+            <div class="card">
+                <h2>Client Configuration</h2>
+                <table class="portal-table">
+                    <tr>
+                        <th>Client ID</th>
+                        <td><code>{{.ClientID}}</code></td>
+                    </tr>
+                    {{if not .IsPublic}}
+                    <tr>
+                        <th>Client Secret</th>
+                        <td><code>{{.ClientSecret}}</code></td>
+                    </tr>
+                    {{end}}
+                    <tr>
+                        <th>Token Endpoint Auth Method</th>
+                        <td>{{if .IsPublic}}none{{else}}client_secret_basic / client_secret_post{{end}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="mt-3">
+                <a href="/portal/clients" class="btn btn-primary">Back to Clients</a>
+                <a href="/portal/clients/{{.ClientID}}" class="btn btn-outline">Edit Client</a>
+            </div>
+
+            <script>
+            function copySecret() {
+                const secret = document.getElementById('secret').innerText;
+                navigator.clipboard.writeText(secret).then(function() {
+                    alert('Secret copied to clipboard!');
+                });
+            }
+            </script>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>SSF Streams</h1>
+                <a href="/portal/ssf/new" class="btn btn-primary">+ New Stream</a>
+            </div>
+
+            <div class="card mb-3">
+                <p class="text-muted small">
+                    SSF Configuration: <code>{{.IssuerURL}}/.well-known/ssf-configuration</code>
+                </p>
+            </div>
+
+            {{if .Streams}}
+            <table class="portal-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Endpoint</th>
+                        <th>Status</th>
+                        <th>Events</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Streams}}
+                    <tr>
+                        <td>
+                            {{if .Description}}
+                                {{.Description}}
+                            {{else}}
+                                <span class="text-muted">No description</span>
+                            {{end}}
+                        </td>
+                        <td>
+                            <code class="small">{{.EndpointURL}}</code>
+                        </td>
+                        <td>
+                            {{if eq .Status "enabled"}}
+                                <span class="badge badge-success">enabled</span>
+                            {{else if eq .Status "paused"}}
+                                <span class="badge badge-warning">paused</span>
+                            {{else}}
+                                <span class="badge badge-secondary">disabled</span>
+                            {{end}}
+                        </td>
+                        <td>
+                            <span class="badge badge-info">{{len .EventsDelivered}} types</span>
+                            <span class="badge badge-light">{{.EventCount}} sent</span>
+                        </td>
+                        <td class="small">{{.CreatedAt}}</td>
+                        <td>
+                            <a href="/portal/ssf/{{.ID}}" class="btn btn-sm btn-outline">Edit</a>
+                            <form action="/portal/ssf/{{.ID}}/delete" method="POST" style="display:inline" onsubmit="return confirm('Delete this stream?')">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+            {{else}}
+            <div class="card text-center">
+                <p class="text-muted">No SSF streams configured yet.</p>
+                <a href="/portal/ssf/new" class="btn btn-primary">Create your first stream</a>
+            </div>
+            {{end}}
+
+            <div class="mt-3">
+                <a href="/portal/ssf/log" class="btn btn-outline">View Event Logs</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

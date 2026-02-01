@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan details</title>
+    <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <style>
+        html{
+            box-sizing: border-box;
+        }
+        body{
+            font-family:sans-serif;
+            line-height:1.5em;
+            padding-left:30px;
+            padding-right:30px;
+            padding-top:2em;
+        }
+
+        #header{
+        }
+
+        #header th{
+            text-align:left;
+            padding-right: 16px;
+        }
+
+        #results{
+        }
+
+        table{
+        }
+
+        .testStatus-created {
+            background-color: #fcd9f6;
+            color: black;
+        }
+
+        .testStatus-configured {
+            background-color: #d3fffe;
+            color: black;
+        }
+
+        .testStatus-running {
+            background-color: #6d09e8;
+            color: white;
+        }
+
+        .testStatus-waiting {
+            background-color: #6ac4c2;
+            color: black;
+        }
+
+        .testStatus-interrupted {
+            background-color: #b70018;
+            color: white;
+        }
+
+        .testStatus-finished {
+            background-color: #383647;
+            color: white;
+        }
+
+        .testStatus-unknown {
+            background-color: #dedada;
+            color: #6d6a6a;
+        }
+
+        .testResult-passed {
+            background-color: #40e809;
+            color: black;
+        }
+
+        .testResult-warning {
+            background-color: #d88602;
+            color: white;
+        }
+
+        .testResult-failed {
+            background-color: red;
+            color: white;
+        }
+
+        .testResult-review {
+            background-color: #6ac4c2;
+            color: black;
+        }
+
+        .testResult-skipped {
+            background-color: #d88602;
+            color: white;
+        }
+
+        .testResult-unknown {
+            background-color: #dedada;
+            color: #6d6a6a;
+        }
+        .result-success {
+            background-color: #00cc00;
+        }
+
+        .result-failure {
+            background-color: #cc0000;
+        }
+
+        .result-warning {
+            background-color: #d88602;
+        }
+
+        .result-review {
+            background-color: #00ccff;
+        }
+
+        .result-interrupted {
+            background-color: #ddbb88;
+        }
+
+        .result-finished {
+            background-color: #383647;
+        }
+
+        .result-info {
+            background-color: #e2bfce;
+        }
+
+        .result-skipped {
+            background-color: #d88602;
+        }
+
+        .result-default {
+            background-color: #00cc00;
+        }
+        .rounded-pill{
+            background-color: rgba(0.5, 0.5, 0.5, 0.5);
+            border-top-left-radius: 0.25em;
+            border-top-right-radius: 0.25em;
+            border-bottom-right-radius: 0.25em;
+            border-bottom-left-radius: 0.25em;
+            padding-left:0.4em;
+            padding-right:0.4em;
+            padding-top:0.1em;
+            padding-bottom:0.1em;
+            font-size:0.8em;
+        }
+        .badge{
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            box-sizing: border-box;
+            color: rgb(255, 255, 255);
+            display: inline;
+            font-size: 0.8em;
+            font-weight: 700;
+            line-height: 1.2em;
+            padding-bottom: 3.6px;
+            padding-left: 7.2px;
+            padding-right: 7.2px;
+            padding-top: 2.4px;
+            text-align: center;
+            vertical-align: baseline;
+            white-space: no-wrap;
+        }
+        .info{
+            background-color: rgb(226, 191, 206);
+        }
+        .success{
+            background-color: rgb(0, 204, 0);
+        }
+        .failure{
+            background-color: rgb(204, 0, 0);
+            color:#fff;
+        }
+        .interrupted{
+            background-color: rgb(221, 187, 136);
+            color:#fff;
+        }
+        .warning{
+            background-color: rgb(216, 134, 2);
+            color:#fff;
+        }
+        .failed{
+            background-color: rgb(0, 0, 0);
+            color:#fff;
+        }
+        .review{
+            background-color: rgb(0, 204, 255);
+            color:#fff;
+        }
+        .incoming{
+            background-color:rgb(91, 192, 222);
+        }
+        .outgoing{
+            background-color:rgb(91, 192, 222);
+        }
+        .finished{
+            background-color: rgb(56, 54, 71);
+            color:#fff;
+        }
+        .passed{
+            background-color: #40e809;
+            color: #000;
+        }
+        #tests-list{
+
+        }
+        #tests-list tr:hover{
+            background-color:#eee;
+        }
+        #tests-list th{
+            text-align:left;
+            background-color:#f2f2f2;
+            border:1px solid #eee;
+            border-collapse:collapse;
+            padding-left:0.2em;
+            padding-right:0.2em;
+            padding-top:0.2em;
+            padding-bottom:0.2em;
+        }
+        #tests-list td{
+            border:1px solid #eee;
+            border-collapse:collapse;
+            padding-left:0.3em;
+            padding-right:0.3em;
+            padding-top:0.3em;
+            padding-bottom:0.3em;
+        }
+        #moreinfomsg{
+            border:1px solid #eee;
+            padding-left:0.5em;
+            padding-right:0.5em;
+            padding-top:0.5em;
+            padding-bottom:0.5em;
+            margin-left:0.5em;
+            margin-right:0.5em;
+            margin-top:0.5em;
+            margin-bottom:0.5em;
+            background-color:#f3f3f3;
+        }
+    </style>
+</head>
+<body>
+<h1>
+Test Plan Details
+</h1>
+<div id="header">
+    <table>
+        <tr>
+            <th>Plan Name</th>
+            <td>openid-ssf-transmitter-test-plan</td>
+        </tr>
+        <tr>
+            <th>Variant</th>
+            <td>client_auth_type=client_secret_basic, ssf_server_metadata=discovery, server_metadata=discovery, ssf_auth_mode=dynamic, ssf_delivery_mode=push, ssf_profile=caep_interop, client_registration=static_client</td>
+        </tr>
+        <tr>
+            <th>Plan ID</th>
+            <td>
+                <span>x49SsWzl1Uc1g</span>
+                <a target="_blank" href="https://www.certification.openid.net/plan-detail.html?public=true&amp;plan=x49SsWzl1Uc1g">https://www.certification.openid.net/plan-detail.html?public=true&amp;plan=x49SsWzl1Uc1g</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td></td>
+        </tr>
+        <span>
+        <tr>
+            <th>Certification Profile</th>
+            <td>[OpenID SSF Transmitter 1.0]</td>
+        </tr>
+        </span>
+        <tr>
+            <th>Version</th>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <th>Started</th>
+            <td>2026-01-25T19:17:17.304825532Z</td>
+        </tr>
+        <tr>
+            <th>Owner</th>
+            <td>107383749570615484871 https://accounts.google.com</td>
+        </tr>
+        <tr>
+            <th>Exported From</th>
+            <td>https://www.certification.openid.net</td>
+        </tr>
+        <tr>
+            <th>Exported By</th>
+            <td>107383749570615484871 https://accounts.google.com</td>
+        </tr>
+        <tr>
+            <th>Suite Version</th>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <th>Exported</th>
+            <td>2026-01-25 19:20:01 (UTC)</td>
+        </tr>
+    </table>
+</div>
+<div id="moreinfomsg">
+    These test results were generated by the OpenID Foundation conformance suite.
+    By themselves, they are not proof that a deployment is conformant nor that it
+    meets the requirements for certification. For a list of certified deployments,
+    see <a href="https://openid.net/certification/" target="_blank">https://openid.net/certification/</a>
+    - to be added to this list follow
+    the <a href="https://openid.net/certification/instructions/" target="_blank">certification instructions</a>.
+</div>
+
+<h1>Test Results</h1>
+<table cellspacing="0" cellpadding="1" id="tests-list">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Result</th>
+            <th>Test Name</th>
+            <th>Test Id</th>
+            <th>Test Version</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-transmitter-metadata-3J83K1x6W0On9mU.html">openid-ssf-transmitter-metadata</a>
+            </td>
+            <td>3J83K1x6W0On9mU</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-happy-path-zHQCu0SEFC19NH7.html">openid-ssf-stream-control-happy-path</a>
+            </td>
+            <td>zHQCu0SEFC19NH7</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-create-stream-with-broken-input-5ZRq7NWHpn0pBNY.html">openid-ssf-stream-control-error-create-stream-with-broken-input</a>
+            </td>
+            <td>5ZRq7NWHpn0pBNY</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-create-stream-with-invalid-token-gBeOX0ouQw4vxKH.html">openid-ssf-stream-control-error-create-stream-with-invalid-token</a>
+            </td>
+            <td>gBeOX0ouQw4vxKH</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-create-stream-with-duplicate-config-1sGEfbImKqyXgd5.html">openid-ssf-stream-control-error-create-stream-with-duplicate-config</a>
+            </td>
+            <td>1sGEfbImKqyXgd5</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-read-stream-with-invalid-token-UnlQTqbZO0ekfKv.html">openid-ssf-stream-control-error-read-stream-with-invalid-token</a>
+            </td>
+            <td>UnlQTqbZO0ekfKv</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-read-unknown-stream-FMtNjJDq6bvp3Sa.html">openid-ssf-stream-control-error-read-unknown-stream</a>
+            </td>
+            <td>FMtNjJDq6bvp3Sa</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-update-stream-with-invalid-token-3CmXucrowdol6lh.html">openid-ssf-stream-control-error-update-stream-with-invalid-token</a>
+            </td>
+            <td>3CmXucrowdol6lh</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-update-stream-with-invalid-body-FpwFqbMQsZAW6IP.html">openid-ssf-stream-control-error-update-stream-with-invalid-body</a>
+            </td>
+            <td>FpwFqbMQsZAW6IP</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-update-unknown-stream-E9XDyXac3NkY4aT.html">openid-ssf-stream-control-error-update-unknown-stream</a>
+            </td>
+            <td>E9XDyXac3NkY4aT</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-replace-stream-with-invalid-body-h46jm0SUo7QewI2.html">openid-ssf-stream-control-error-replace-stream-with-invalid-body</a>
+            </td>
+            <td>h46jm0SUo7QewI2</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-replace-stream-with-invalid-token-edXGMX77z0armis.html">openid-ssf-stream-control-error-replace-stream-with-invalid-token</a>
+            </td>
+            <td>edXGMX77z0armis</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-replace-unknown-stream-gzSd43ZD7RZSvcy.html">openid-ssf-stream-control-error-replace-unknown-stream</a>
+            </td>
+            <td>gzSd43ZD7RZSvcy</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-delete-stream-with-invalid-token-X1uyVwgDUZSaEC4.html">openid-ssf-stream-control-error-delete-stream-with-invalid-token</a>
+            </td>
+            <td>X1uyVwgDUZSaEC4</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-control-error-delete-unknown-stream-mTpYee0y9PIQWTr.html">openid-ssf-stream-control-error-delete-unknown-stream</a>
+            </td>
+            <td>mTpYee0y9PIQWTr</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-stream-subject-control-F6DQj9V10RJ5CSE.html">openid-ssf-stream-subject-control</a>
+            </td>
+            <td>F6DQj9V10RJ5CSE</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-transmitter-events-gCiwJNZRBpQKxVp.html">openid-ssf-transmitter-events</a>
+            </td>
+            <td>gCiwJNZRBpQKxVp</td>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label testStatus-finished">FINISHED</span>
+            </td>
+            <td>
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+            <td>
+                <a href="test-log-openid-ssf-transmitter-push-no-auth-ntAPPlm0Kxtk3EL.html">openid-ssf-transmitter-push-no-auth</a>
+            </td>
+            <td>ntAPPlm0Kxtk3EL</td>
+            <td>5.1.39</td>
+        </tr>
+    </tbody>
+</table>
+<p> </p>
+</body>
+</html>

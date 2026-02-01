@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RP2 - OIDC Client (Poll)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #e8f5e9;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .status.logged-out {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        .status.logged-in {
+            background-color: #c8e6c9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: #4caf50;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #388e3c;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .user-info {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .ssf-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            border-left: 4px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>RP2 - OIDC Client <span class="badge">Poll</span></h1>
+            <p>OpenID Connect + SSF (Poll Delivery) Demo</p>
+        </div>
+
+        {{if .IsLoggedIn}}
+            <div class="status logged-in">
+                <strong>Logged In</strong><br>
+                Welcome, {{.User.Name}}!
+            </div>
+
+            <div class="user-info">
+                <h3>User Information</h3>
+                <p><strong>Username:</strong> {{.User.Name}}</p>
+                <p><strong>Email:</strong> {{.User.Email}}</p>
+                <p><strong>User ID:</strong> {{.User.Sub}}</p>
+                <p><strong>Role:</strong>
+                    <span style="font-weight: bold; color: {{if eq .User.Role "admin"}}#dc3545{{else if eq .User.Role "owner"}}#6f42c1{{else}}#28a745{{end}};">
+                        {{if eq .User.Role "admin"}}Admin{{else if eq .User.Role "owner"}}Owner{{else}}User{{end}}
+                    </span>
+                </p>
+            </div>
+
+            <div class="ssf-info">
+                <strong>SSF Delivery: Poll (RFC 8936)</strong>
+                <ul style="margin: 10px 0 0 0; padding-left: 20px; font-size: 0.9em;">
+                    <li>Role changes at IdP are propagated to this RP via polling</li>
+                    <li>Session revocation from IdP terminates your session here automatically</li>
+                </ul>
+            </div>
+
+            <div class="nav">
+                <a href="/profile" class="btn btn-primary">View Profile</a>
+                <a href="/logout" class="btn btn-danger">Logout</a>
+            </div>
+        {{else}}
+            <div class="status logged-out">
+                <strong>Not Logged In</strong><br>
+                Please log in with the OIDC Provider.
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <p>Click the button below to log in with the OIDC Provider.</p>
+                <a href="/login" class="btn btn-primary" style="font-size: 18px; padding: 15px 30px;">
+                    Login with OIDC
+                </a>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; background-color: #e8f5e9; border-radius: 5px;">
+                <h3>How it works</h3>
+                <ol>
+                    <li>Click the "Login with OIDC" button</li>
+                    <li>You will be redirected to the OIDC Provider login page</li>
+                    <li>Enter your username and password</li>
+                    <li>After authentication, you will be redirected back to this client</li>
+                    <li>Your user information and tokens will be displayed</li>
+                </ol>
+            </div>
+
+        {{end}}
+    </div>
+</body>
+</html>

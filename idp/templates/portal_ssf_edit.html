@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+    <style>
+        .status-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .status-form select {
+            width: auto;
+            padding: 8px 12px;
+        }
+        .event-log-table {
+            font-size: 13px;
+        }
+        .event-log-table td {
+            padding: 8px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>Edit Stream{{if .Stream.Description}}: {{.Stream.Description}}{{end}}</h1>
+                <a href="/portal/ssf" class="btn btn-outline">Back to List</a>
+            </div>
+
+            <!-- Status Control -->
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Stream Status</h3>
+                <form action="/portal/ssf/{{.Stream.ID}}/status" method="POST" class="status-form">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status">
+                        <option value="enabled" {{if eq .Stream.Status "enabled"}}selected{{end}}>Enabled</option>
+                        <option value="paused" {{if eq .Stream.Status "paused"}}selected{{end}}>Paused</option>
+                        <option value="disabled" {{if eq .Stream.Status "disabled"}}selected{{end}}>Disabled</option>
+                    </select>
+                    <input type="text" name="reason" placeholder="Reason (optional)" value="{{.Stream.StatusReason}}" style="flex: 1;">
+                    <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
+                </form>
+                <p class="small text-muted">
+                    <strong>enabled:</strong> Events are delivered normally |
+                    <strong>paused:</strong> Events are buffered for later delivery |
+                    <strong>disabled:</strong> Events are discarded
+                </p>
+            </div>
+
+            <!-- Stream Configuration -->
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Configuration</h3>
+                <form action="/portal/ssf/{{.Stream.ID}}" method="POST">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" name="description" value="{{.Stream.Description}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery_method">Delivery Method</label>
+                        <select id="delivery_method" name="delivery_method" onchange="toggleEndpointUrl()">
+                            <option value="urn:ietf:rfc:8935" {{if eq .Stream.DeliveryMethod "urn:ietf:rfc:8935"}}selected{{end}}>Push (RFC 8935) - IdP pushes events to RP</option>
+                            <option value="urn:ietf:rfc:8936" {{if eq .Stream.DeliveryMethod "urn:ietf:rfc:8936"}}selected{{end}}>Poll (RFC 8936) - RP polls for events</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="endpoint_url_group">
+                        <label for="endpoint_url">Receiver Endpoint URL</label>
+                        <input type="url" id="endpoint_url" name="endpoint_url" value="{{.Stream.EndpointURL}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Event Types to Deliver</label>
+                        {{range .EventTypes}}
+                        <div class="form-check">
+                            <input type="checkbox" id="event_{{.Name}}" name="events_requested" value="{{.URI}}" {{if index $.SelectedEvents .URI}}checked{{end}}>
+                            <label for="event_{{.Name}}">
+                                <strong>{{.Name}}</strong>
+                                <span class="text-muted small">- {{.Description}}</span>
+                            </label>
+                        </div>
+                        {{end}}
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Test Events -->
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Send Test Event</h3>
+                <p class="small text-muted">Send a test event to verify the stream is working correctly.</p>
+
+                {{if ne .Stream.Status "enabled"}}
+                <div class="alert alert-warning">Stream must be enabled to send test events.</div>
+                {{else}}
+                <form action="/portal/ssf/{{.Stream.ID}}/test-event" method="POST">
+                    <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+                        <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                            <label for="event_type">Event Type</label>
+                            <select id="event_type" name="event_type" required>
+                                {{range .EventTypes}}
+                                <option value="{{.URI}}">{{.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                            <label for="subject">Subject (Username)</label>
+                            <input type="text" id="subject" name="subject" placeholder="testuser">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Test Event</button>
+                    </div>
+                </form>
+                {{end}}
+
+                <hr style="margin: 20px 0;">
+                <h4 style="margin-bottom: 10px;">Verification</h4>
+                <p class="small text-muted">Send a verification event to test the stream connection.</p>
+                <form action="/portal/ssf/{{.Stream.ID}}/verify" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-outline btn-sm" {{if ne .Stream.Status "enabled"}}disabled title="Stream must be enabled"{{end}}>
+                        Send Verification Event
+                    </button>
+                </form>
+            </div>
+
+            <!-- Recent Events -->
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Recent Events</h3>
+                {{if .EventLogs}}
+                <table class="portal-table event-log-table">
+                    <thead>
+                        <tr>
+                            <th>Event Type</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Sent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .EventLogs}}
+                        <tr>
+                            <td>{{.EventTypeName}}</td>
+                            <td>
+                                {{if .SubjectIdentifier}}
+                                    <code>{{.SubjectIdentifier}}</code>
+                                {{else}}
+                                    <span class="text-muted">-</span>
+                                {{end}}
+                            </td>
+                            <td>
+                                {{if eq .Status "sent"}}
+                                    <span class="badge badge-success">sent</span>
+                                {{else if eq .Status "queued"}}
+                                    <span class="badge badge-info">queued</span>
+                                {{else if eq .Status "failed"}}
+                                    <span class="badge badge-danger">failed</span>
+                                {{else}}
+                                    <span class="badge badge-warning">{{.Status}}</span>
+                                {{end}}
+                            </td>
+                            <td>{{.CreatedAt}}</td>
+                            <td>{{if .SentAt}}{{.SentAt}}{{else}}-{{end}}</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+                <a href="/portal/ssf/log" class="btn btn-outline btn-sm mt-3">View All Logs</a>
+                {{else}}
+                <p class="text-muted">No events sent yet.</p>
+                {{end}}
+            </div>
+
+            <!-- Stream Info -->
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Stream Details</h3>
+                <table style="width: 100%;">
+                    <tr><td style="width: 150px;"><strong>Stream ID:</strong></td><td><code>{{.Stream.ID}}</code></td></tr>
+                    <tr><td><strong>Created:</strong></td><td>{{.Stream.CreatedAt}}</td></tr>
+                    <tr><td><strong>Updated:</strong></td><td>{{.Stream.UpdatedAt}}</td></tr>
+                    <tr><td><strong>Delivery Method:</strong></td><td><code>{{.Stream.DeliveryMethod}}</code></td></tr>
+                </table>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="card" style="border: 1px solid #dc3545;">
+                <h3 style="margin-bottom: 15px; color: #dc3545;">Danger Zone</h3>
+                <form action="/portal/ssf/{{.Stream.ID}}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this stream? This action cannot be undone.')">
+                    <button type="submit" class="btn btn-danger">Delete Stream</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script>
+    function toggleEndpointUrl() {
+        const method = document.getElementById('delivery_method').value;
+        const group = document.getElementById('endpoint_url_group');
+        const input = document.getElementById('endpoint_url');
+        if (method === 'urn:ietf:rfc:8936') {
+            group.style.display = 'none';
+            input.required = false;
+        } else {
+            group.style.display = 'block';
+            input.required = true;
+        }
+    }
+    toggleEndpointUrl();
+    </script>
+</body>
+</html>

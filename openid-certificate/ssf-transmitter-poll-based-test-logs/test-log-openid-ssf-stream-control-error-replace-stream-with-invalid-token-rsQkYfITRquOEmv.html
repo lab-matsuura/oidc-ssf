@@ -1,0 +1,3882 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Test detail</title>
+    <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <style>
+        html{
+            box-sizing: border-box;
+        }
+        body{
+            font-family:sans-serif;
+            line-height:1.5em;
+            padding-left:30px;
+            padding-right:30px;
+            padding-top:2em;
+            min-width:700px;
+        }
+        pre{
+            margin-top:0px;
+            margin-bottom:0px;
+            margin-left:0px;
+            font-family: sans-serif;
+        }
+        #header{
+        }
+        #header th{
+            text-align:left;
+        }
+        #results{
+            overflow-x:auto;
+        }
+        table{
+            width:100%;
+        }
+        .log-item{
+            width:100%;
+            margin-bottom:0;
+            padding-bottom:1em;
+            padding-top:1em;
+            border-top:1px solid #ccc;
+            line-height:1.7em;
+        }
+        .log-item:hover{
+            background-color: #ebf6fa;
+        }
+        .row{
+            padding-top:0.2em;
+            padding-left:0.2em;
+            padding-bottom:0.2em;
+            padding-right:0.2em;
+        }
+         .col-1{
+            width:10%;
+            min-width:100px;
+            vertical-align: top;
+            font-size:0.90em;
+         }
+         .col-2{
+            width:10%;
+            min-width:100px;
+            vertical-align: top;
+            padding-left:20px;
+         }
+         .col-3{
+             vertical-align: top;
+         }
+         .labelCollection{
+
+         }
+         .labelCollection span{
+            border:1px;
+         }
+
+        .wrapLongStrings{
+            white-space:pre-wrap;
+        }
+        .collapse:not(.show) {
+            display:none;
+        }
+        .label{
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            box-sizing: border-box;
+            color: rgb(255, 255, 255);
+            display: inline;
+            font-size: 0.8em;
+            font-weight: 700;
+            line-height: 1.2em;
+            padding-bottom: 3.6px;
+            padding-left: 7.2px;
+            padding-right: 7.2px;
+            padding-top: 2.4px;
+            text-align: center;
+            vertical-align: baseline;
+            white-space: no-wrap;
+        }
+        .label-info{
+            background-color: #5bc0de;
+        }
+        .testStatus-created {
+            background-color: #fcd9f6;
+            color: black;
+        }
+
+        .testStatus-configured {
+            background-color: #d3fffe;
+            color: black;
+        }
+
+        .testStatus-running {
+            background-color: #6d09e8;
+            color: white;
+        }
+
+        .testStatus-waiting {
+            background-color: #6ac4c2;
+            color: black;
+        }
+
+        .testStatus-interrupted {
+            background-color: #b70018;
+            color: white;
+        }
+
+        .testStatus-finished {
+            background-color: #383647;
+            color: white;
+        }
+
+        .testStatus-unknown {
+            background-color: #dedada;
+            color: #6d6a6a;
+        }
+
+        .testResult-passed {
+            background-color: #40e809;
+            color: black;
+        }
+
+        .testResult-warning {
+            background-color: #d88602;
+            color: white;
+        }
+
+        .testResult-failed {
+            background-color: red;
+            color: white;
+        }
+
+        .testResult-review {
+            background-color: #6ac4c2;
+            color: black;
+        }
+
+        .testResult-skipped {
+            background-color: #d88602;
+            color: white;
+        }
+
+        .testResult-unknown {
+            background-color: #dedada;
+            color: #6d6a6a;
+        }
+        .result-success {
+            background-color: #00cc00;
+        }
+
+        .result-failure {
+            background-color: #cc0000;
+        }
+
+        .result-warning {
+            background-color: #d88602;
+        }
+
+        .result-review {
+            background-color: #00ccff;
+        }
+
+        .result-interrupted {
+            background-color: #ddbb88;
+        }
+
+        .result-finished {
+            background-color: #383647;
+        }
+
+        .result-info {
+            background-color: #e2bfce;
+        }
+
+        .result-skipped {
+            background-color: #d88602;
+        }
+
+        .result-default {
+            background-color: #00cc00;
+        }
+        .rounded-pill{
+            background-color: rgba(0.5, 0.5, 0.5, 0.5);
+            border-top-left-radius: 0.25em;
+            border-top-right-radius: 0.25em;
+            border-bottom-right-radius: 0.25em;
+            border-bottom-left-radius: 0.25em;
+            padding-left:0.4em;
+            padding-right:0.4em;
+            padding-top:0.1em;
+            padding-bottom:0.1em;
+            font-size:0.85em;
+        }
+        .requirement{
+            border:1px solid #ccc;
+            padding-left:0.3em;
+            padding-right:0.3em;
+            padding-top:0.2em;
+            padding-bottom:0.2em;
+            display:inline-block;
+            background-color: rgb(119, 119, 119);
+            color:#fff;
+            font-size:0.7em;
+            font-weight:normal;
+            text-decoration:none;
+        }
+        .log-http{
+        }
+        .more{
+            background-color:#fff;
+        }
+        .more-btn{
+        }
+        a.more-btn{
+            font-size:0.85em;
+            background-image: linear-gradient(rgb(255, 255, 255) 0px, rgb(224, 224, 224) 100%);
+            border:1px solid rgb(204, 204, 204);
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+            padding-top:0.3em;
+            padding-bottom:0.3em;
+            color:rgb(51, 51, 51);
+            text-decoration: none;
+        }
+        .more-row{
+            border:1px solid #eee;
+            width:100%;
+        }
+        .more-key{
+            text-align:right;
+            vertical-align: top;
+            background-color: #edf2f4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-all;
+            padding-right:3px;
+        }
+        td.more-key{
+            width:15%;
+        }
+        .more-value{
+            vertical-align: top;
+            background-color: #f1f1f1;
+            padding-left:3px;
+            font-size:0.9em;
+        }
+        .more-text{
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .more-jwt{
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .more-json{
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .log-msg{
+        }
+        .log-src{
+            font-family: monospace;
+        }
+        .prettyprint{
+         }
+         .lang-javascript{
+         }
+         .block-title{
+            font-size:1.15em;
+            color:#fff;
+            padding-left:0.25em;
+            padding-right:0.25em;
+            padding-bottom:0.25em;
+            padding-top:0.25em;
+         }
+        .log-entry-title{
+        }
+        ul.stacktrace{
+            margin-top:3px;
+            margin-left:3px;
+        }
+        .stacktrace li{
+            list-style-type:none;
+            margin-top:2px;
+            margin-bottom:2px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .p-1{
+            padding:0.1em 0.1em 0.1em 0.1em;
+        }
+        .test-summary{
+            background-color: rgb(217, 237, 247);
+            border: 1px solid rgb(221, 221, 221);
+            padding-top:0.3em;
+            padding-left:0.3em;
+            padding-right:0.3em;
+            padding-bottom:0.3em;
+        }
+        #fixedtoplink{
+            position:fixed;
+            bottom:30px;
+            right:30px;
+            background-color:#999;
+            color:#fff;
+            opacity: 0.8;
+            padding-top:0.3em;
+            padding-left:0.3em;
+            padding-right:0.3em;
+            padding-bottom:0.3em;
+            font-size:0.85em;
+            text-decoration:none;
+        }
+
+        .review-img{
+            max-height: 50vh;
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+    </style>
+    <script>
+        function moreClicked(itemid){
+            var moreelem = document.getElementById('more_' + itemid);
+            if(moreelem.className.includes('collapse')){
+                moreelem.className='more';
+            }
+            else{
+                moreelem.className='more collapse';
+            }
+        }
+
+        function expandMores() {
+            var mores = document.querySelectorAll('.more');
+            for(var i in mores){
+                var moreelem = mores[i];
+                if(moreelem.className){
+                    moreelem.className='more';
+                }
+            }
+        }
+
+        function collapseMores(){
+            var mores = document.querySelectorAll('.more');
+            for(var i in mores){
+                var moreelem = mores[i];
+                if(moreelem.className){
+                    moreelem.className='more collapse';
+                }
+            }
+        }
+
+    </script>
+</head>
+<body>
+<h1>
+Test Summary
+</h1>
+<div  id="header">
+    <table style="width:auto;">
+        <tr>
+            <th>Test Name</th>
+            <td>openid-ssf-stream-control-error-replace-stream-with-invalid-token</td>
+        </tr>
+        <tr>
+            <th>Variant</th>
+            <td>client_auth_type=client_secret_basic, ssf_server_metadata=discovery, server_metadata=discovery, ssf_auth_mode=dynamic, ssf_delivery_mode=poll, ssf_profile=caep_interop, client_registration=static_client</td>
+        </tr>
+        <tr>
+            <th>Test ID</th>
+            <td>
+                <span>rsQkYfITRquOEmv</span>
+                <a target="_blank" href="https://www.certification.openid.net/log-detail.html?public=true&amp;log=rsQkYfITRquOEmv">https://www.certification.openid.net/log-detail.html?public=true&amp;log=rsQkYfITRquOEmv</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>2026-01-25T19:22:34.935270401Z</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Test Version</th>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <th>Test Owner</th>
+            <td>107383749570615484871 https://accounts.google.com</td>
+        </tr>
+        <tr>
+            <th>Plan ID</th>
+            <td>
+                <span>9qye64W4FoHKk</span>
+                <a target="_blank" href="https://www.certification.openid.net/plan-detail.html?public=true&amp;plan=9qye64W4FoHKk">https://www.certification.openid.net/plan-detail.html?public=true&amp;plan=9qye64W4FoHKk</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Exported From</th>
+            <td>https://www.certification.openid.net</td>
+        </tr>
+        <tr>
+            <th>Exported By</th>
+            <td>107383749570615484871 https://accounts.google.com</td>
+        </tr>
+        <tr>
+            <th>Suite Version</th>
+            <td>5.1.39</td>
+        </tr>
+        <tr>
+            <th>Exported</th>
+            <td>2026-01-25 19:24:07 (UTC)</td>
+        </tr>
+    </table>
+    <div class="test-summary">This test verifies the behavior of the stream control for error cases. It attempts to replace a stream configuration with an invalid access token.</div>
+    <hr>
+    <table>
+        <tr>
+            <td align="center">
+                Status:
+                <span class="label testStatus-finished">FINISHED</span>
+
+                Result:
+                <span class="label testResult-passed">PASSED</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <span class="label result-success">SUCCESS <span class="badge rounded-pill">20</span></span>
+
+                <span class="label result-failure">FAILURE <span class="badge rounded-pill">0</span></span>
+
+                <span class="label result-warning">WARNING <span class="badge rounded-pill">0</span></span>
+
+                <span class="label result-review">REVIEW <span class="badge rounded-pill">0</span></span>
+
+                <span class="label result-info">INFO <span class="badge rounded-pill">1</span></span>
+            </td>
+        </tr>
+        
+    </table>
+    <hr>
+</div>
+
+<h1 id="testresultsheader">Test Results</h1>
+<a href="javascript:expandMores()">Expand All</a>
+<a href="javascript:collapseMores()">Collapse All</a>
+<div>All times are UTC</div>
+<div id="results">
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-X9jI0pDkneRJz4CVH3Aw8EFpOTM9dU5K">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:34</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-X9jI0pDkneRJz4CVH3Aw8EFpOTM9dU5K&#39;)">(8) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-info">INFO</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">TEST-RUNNER</div>
+                <div class="log-msg">Test instance rsQkYfITRquOEmv created</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-X9jI0pDkneRJz4CVH3Aw8EFpOTM9dU5K">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">baseUrl</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://www.certification.openid.net/test/a/ssf-oidc-provider-dev</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">variant</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;client_auth_type&quot;: &quot;client_secret_basic&quot;,
+  &quot;ssf_server_metadata&quot;: &quot;discovery&quot;,
+  &quot;server_metadata&quot;: &quot;discovery&quot;,
+  &quot;ssf_auth_mode&quot;: &quot;dynamic&quot;,
+  &quot;ssf_delivery_mode&quot;: &quot;poll&quot;,
+  &quot;ssf_profile&quot;: &quot;caep_interop&quot;,
+  &quot;client_registration&quot;: &quot;static_client&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">alias</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">ssf-oidc-provider-dev</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">description</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">planId</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">9qye64W4FoHKk</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">config</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;alias&quot;: &quot;ssf-oidc-provider-dev&quot;,
+  &quot;ssf&quot;: {
+    &quot;transmitter&quot;: {
+      &quot;issuer&quot;: &quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/&quot;,
+      &quot;configuration_metadata_endpoint&quot;: &quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/ssf-configuration&quot;
+    }
+  },
+  &quot;server&quot;: {
+    &quot;discoveryUrl&quot;: &quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/openid-configuration&quot;
+  },
+  &quot;client&quot;: {
+    &quot;client_id&quot;: &quot;conformance-basic-1&quot;,
+    &quot;client_secret&quot;: &quot;conformance-secret-1&quot;,
+    &quot;scope&quot;: &quot;openid&quot;
+  },
+  &quot;federation&quot;: {
+    &quot;trust_anchor&quot;: &quot;https://www.certification.openid.net/test/a/ssf-oidc-provider-dev/trust-anchor&quot;
+  }
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">baseMtlsUrl</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://mtls-www.certification.openid.net/test-mtls/a/ssf-oidc-provider-dev</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">testName</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">openid-ssf-stream-control-error-replace-stream-with-invalid-token</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-xehdin2WWiO0BNk3uV9GWRJqtvq6i2xU">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:34</span>
+                
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">openid-ssf-stream-control-error-replace-stream-with-invalid-token</div>
+                <div class="log-msg">Setup Done</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-xehdin2WWiO0BNk3uV9GWRJqtvq6i2xU">
+                    
+
+                    
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-8paQVCajGIzO4iizISIrS9hfg0oZm9lB">
+    <tbody>
+        <tr>
+            <td colspan="3" class="block-title" style="background-color:#8a817c">Fetch Transmitter Metadata</td>
+        </tr>
+    </tbody>
+    
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-djcpccqPih8bDAXwODRXKMG52HmLEaj3">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:34</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-djcpccqPih8bDAXwODRXKMG52HmLEaj3&#39;)">(3) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-7.2.3">OIDSSF-7.2.3</a><a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-7.2">OIDSSF-7.2</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFGetDynamicTransmitterConfiguration</div>
+                <div class="log-msg">Derived effective metadata endpoint</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-djcpccqPih8bDAXwODRXKMG52HmLEaj3">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">metadata_suffix</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">effective_metadata_endpoint_url</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/ssf-configuration</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">metadata_endpoint_url</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/ssf-configuration</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-PqaTZdZyIbJHSFZHsXubbKmEJ1GIVMLW">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:34</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-PqaTZdZyIbJHSFZHsXubbKmEJ1GIVMLW&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFGetDynamicTransmitterConfiguration</div>
+                <div class="log-msg">HTTP request</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-PqaTZdZyIbJHSFZHsXubbKmEJ1GIVMLW">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">request_uri</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/ssf-configuration</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_method</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">GET</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;Accept&quot;: &quot;text/plain, application/json, application/yaml, application/*+json, */*&quot;,
+  &quot;Content-Length&quot;: &quot;0&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text"></pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-abRK28ho3Cm57LcWbUiyOQQqYy0HQZu1">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:35</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-abRK28ho3Cm57LcWbUiyOQQqYy0HQZu1&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        <span class="label bg-info">RESPONSE</span>
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFGetDynamicTransmitterConfiguration</div>
+                <div class="log-msg">HTTP response</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-abRK28ho3Cm57LcWbUiyOQQqYy0HQZu1">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_code</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">200 OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_text</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;content-type&quot;: &quot;application/json&quot;,
+  &quot;x-cloud-trace-context&quot;: &quot;e7fe31c051f629888e2a5869e46dfeef&quot;,
+  &quot;date&quot;: &quot;Sun, 25 Jan 2026 19:22:35 GMT&quot;,
+  &quot;server&quot;: &quot;Google Frontend&quot;,
+  &quot;content-length&quot;: &quot;1763&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">{&quot;issuer&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app&quot;,&quot;jwks_uri&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/jwks&quot;,&quot;spec_version&quot;:&quot;1_0-final&quot;,&quot;delivery_methods_supported&quot;:[&quot;urn:ietf:rfc:8935&quot;,&quot;urn:ietf:rfc:8936&quot;],&quot;configuration_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/stream&quot;,&quot;status_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/status&quot;,&quot;add_subject_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/subjects:add&quot;,&quot;remove_subject_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/subjects:remove&quot;,&quot;verification_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/verify&quot;,&quot;authorization_schemes&quot;:[{&quot;spec_urn&quot;:&quot;urn:ietf:rfc:6749&quot;}],&quot;events_supported&quot;:[&quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,&quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;,&quot;https://schemas.openid.net/secevent/risc/event-type/account-disabled&quot;,&quot;https://schemas.openid.net/secevent/risc/event-type/account-enabled&quot;,&quot;https://schemas.openid.net/secevent/risc/event-type/account-purged&quot;,&quot;https://schemas.openid.net/secevent/risc/event-type/identifier-changed&quot;,&quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,&quot;https://schemas.openid.net/secevent/caep/event-type/token-claims-change&quot;,&quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;,&quot;https://schemas.openid.net/secevent/caep/event-type/assurance-level-change&quot;,&quot;https://schemas.openid.net/secevent/caep/event-type/device-compliance-change&quot;,&quot;https://schemas.openid.net/secevent/ssf/event-type/verification&quot;],&quot;default_subjects&quot;:&quot;NONE&quot;}
+</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-aYUYzBL5dCKmEg7JHnBfjMuTsPjuxHNq">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:35</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-aYUYzBL5dCKmEg7JHnBfjMuTsPjuxHNq&#39;)">(12) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-7.2.3">OIDSSF-7.2.3</a><a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-7.2">OIDSSF-7.2</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFGetDynamicTransmitterConfiguration</div>
+                <div class="log-msg">Successfully parsed transmitter metadata</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-aYUYzBL5dCKmEg7JHnBfjMuTsPjuxHNq">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">issuer</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">jwks_uri</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/jwks</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">spec_version</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">1_0-final</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">delivery_methods_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;urn:ietf:rfc:8935&quot;,
+  &quot;urn:ietf:rfc:8936&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">configuration_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/stream</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">status_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/status</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">add_subject_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/subjects:add</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">remove_subject_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/subjects:remove</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">verification_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/verify</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">authorization_schemes</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  {
+    &quot;spec_urn&quot;: &quot;urn:ietf:rfc:6749&quot;
+  }
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">events_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,
+  &quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;,
+  &quot;https://schemas.openid.net/secevent/risc/event-type/account-disabled&quot;,
+  &quot;https://schemas.openid.net/secevent/risc/event-type/account-enabled&quot;,
+  &quot;https://schemas.openid.net/secevent/risc/event-type/account-purged&quot;,
+  &quot;https://schemas.openid.net/secevent/risc/event-type/identifier-changed&quot;,
+  &quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,
+  &quot;https://schemas.openid.net/secevent/caep/event-type/token-claims-change&quot;,
+  &quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;,
+  &quot;https://schemas.openid.net/secevent/caep/event-type/assurance-level-change&quot;,
+  &quot;https://schemas.openid.net/secevent/caep/event-type/device-compliance-change&quot;,
+  &quot;https://schemas.openid.net/secevent/ssf/event-type/verification&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">default_subjects</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">NONE</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-9OevuE72MyXurvLnevXbziDU4Djt45Pj">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:35</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-9OevuE72MyXurvLnevXbziDU4Djt45Pj&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-7.2.3">OIDSSF-7.2.3</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">EnsureHttpStatusCodeIs200</div>
+                <div class="log-msg">ssf-configuration endpoint returned the expected http status</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-9OevuE72MyXurvLnevXbziDU4Djt45Pj">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">expected_status</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">200</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">http_status</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">200</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-KqlBuUEp8YKYAcusNqgzgu4vcQYAx9wN">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:35</span>
+                
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-7.2.3">OIDSSF-7.2.3</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">EnsureContentTypeJson</div>
+                <div class="log-msg">endpoint_response Content-Type: header is application/json</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-KqlBuUEp8YKYAcusNqgzgu4vcQYAx9wN">
+                    
+
+                    
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-hH5BJwlE9FYZr7nA6LhAprBYaIiUyDOQ">
+    <tbody>
+        <tr>
+            <td colspan="3" class="block-title" style="background-color:#118ab2">Prepare Transmitter Access</td>
+        </tr>
+    </tbody>
+    
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-CVQEKu3Myf1oNGEF62ZwqFCeeB8F5wjg">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:35</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-CVQEKu3Myf1oNGEF62ZwqFCeeB8F5wjg&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">GetDynamicServerConfiguration</div>
+                <div class="log-msg">HTTP request</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-CVQEKu3Myf1oNGEF62ZwqFCeeB8F5wjg">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">request_uri</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/openid-configuration</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_method</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">GET</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;Accept&quot;: &quot;text/plain, application/json, application/yaml, application/*+json, */*&quot;,
+  &quot;Content-Length&quot;: &quot;0&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text"></pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-GVUrQQpna0yEPB70sdl6t01et935tK5X">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-GVUrQQpna0yEPB70sdl6t01et935tK5X&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        <span class="label bg-info">RESPONSE</span>
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">GetDynamicServerConfiguration</div>
+                <div class="log-msg">HTTP response</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-GVUrQQpna0yEPB70sdl6t01et935tK5X">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_code</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">200 OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_text</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;content-type&quot;: &quot;application/json&quot;,
+  &quot;x-cloud-trace-context&quot;: &quot;f0815e68f7410328a7ac98b26a599302&quot;,
+  &quot;date&quot;: &quot;Sun, 25 Jan 2026 19:22:36 GMT&quot;,
+  &quot;server&quot;: &quot;Google Frontend&quot;,
+  &quot;content-length&quot;: &quot;1124&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">{&quot;issuer&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app&quot;,&quot;authorization_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/authorize&quot;,&quot;token_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/token&quot;,&quot;userinfo_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/userinfo&quot;,&quot;jwks_uri&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/jwks&quot;,&quot;response_types_supported&quot;:[&quot;code&quot;,&quot;token&quot;,&quot;id_token&quot;,&quot;code token&quot;,&quot;code id_token&quot;,&quot;token id_token&quot;,&quot;code token id_token&quot;],&quot;subject_types_supported&quot;:[&quot;public&quot;],&quot;id_token_signing_alg_values_supported&quot;:[&quot;RS256&quot;],&quot;scopes_supported&quot;:[&quot;openid&quot;,&quot;profile&quot;,&quot;email&quot;],&quot;token_endpoint_auth_methods_supported&quot;:[&quot;client_secret_basic&quot;,&quot;client_secret_post&quot;],&quot;claims_supported&quot;:[&quot;sub&quot;,&quot;name&quot;,&quot;email&quot;,&quot;aud&quot;,&quot;exp&quot;,&quot;iat&quot;,&quot;iss&quot;],&quot;grant_types_supported&quot;:[&quot;authorization_code&quot;,&quot;refresh_token&quot;,&quot;client_credentials&quot;],&quot;code_challenge_methods_supported&quot;:[&quot;S256&quot;],&quot;ssf_configuration_endpoint&quot;:&quot;https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/ssf-configuration&quot;}
+</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-XFBuqkueQ9iwgQmndhEt3SpLGapeUFgB">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-XFBuqkueQ9iwgQmndhEt3SpLGapeUFgB&#39;)">(14) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">GetDynamicServerConfiguration</div>
+                <div class="log-msg">Successfully parsed server configuration</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-XFBuqkueQ9iwgQmndhEt3SpLGapeUFgB">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">issuer</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">authorization_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/authorize</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">token_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/token</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">userinfo_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/userinfo</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">jwks_uri</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/jwks</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_types_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;code&quot;,
+  &quot;token&quot;,
+  &quot;id_token&quot;,
+  &quot;code token&quot;,
+  &quot;code id_token&quot;,
+  &quot;token id_token&quot;,
+  &quot;code token id_token&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">subject_types_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;public&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">id_token_signing_alg_values_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;RS256&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">scopes_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;openid&quot;,
+  &quot;profile&quot;,
+  &quot;email&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">token_endpoint_auth_methods_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;client_secret_basic&quot;,
+  &quot;client_secret_post&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">claims_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;sub&quot;,
+  &quot;name&quot;,
+  &quot;email&quot;,
+  &quot;aud&quot;,
+  &quot;exp&quot;,
+  &quot;iat&quot;,
+  &quot;iss&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">grant_types_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;authorization_code&quot;,
+  &quot;refresh_token&quot;,
+  &quot;client_credentials&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">code_challenge_methods_supported</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;S256&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">ssf_configuration_endpoint</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/.well-known/ssf-configuration</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-8rDwvUG8kFE6djk4wbNwRE8oB7MW5Goo">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-8rDwvUG8kFE6djk4wbNwRE8oB7MW5Goo&#39;)">(3) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">GetStaticClientConfiguration</div>
+                <div class="log-msg">Found a static client object</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-8rDwvUG8kFE6djk4wbNwRE8oB7MW5Goo">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">client_id</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">conformance-basic-1</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">client_secret</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">conformance-secret-1</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">scope</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">openid</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-OyTJiy0QQlxAMuOwdW7GdEyboNZK5aVU">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-OyTJiy0QQlxAMuOwdW7GdEyboNZK5aVU&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">CreateTokenEndpointRequestForClientCredentialsGrant</div>
+                <div class="log-msg">Created token endpoint request</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-OyTJiy0QQlxAMuOwdW7GdEyboNZK5aVU">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">grant_type</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">client_credentials</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">scope</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">openid</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-VC40VHNyUd6i972B5XaLG0sX3LDwd37N">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-VC40VHNyUd6i972B5XaLG0sX3LDwd37N&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">AddScopeToTokenEndpointRequest</div>
+                <div class="log-msg">Added scope of &#39;openid&#39; to token endpoint request</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-VC40VHNyUd6i972B5XaLG0sX3LDwd37N">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">grant_type</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">client_credentials</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">scope</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">openid</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-0SPXbJEN8hTHkS1gGKemcNcR7umRw2zw">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-0SPXbJEN8hTHkS1gGKemcNcR7umRw2zw&#39;)">(1) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">AddBasicAuthClientSecretAuthenticationParameters</div>
+                <div class="log-msg">Added basic authorization header</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-0SPXbJEN8hTHkS1gGKemcNcR7umRw2zw">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">Authorization</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">Basic Y29uZm9ybWFuY2UtYmFzaWMtMTpjb25mb3JtYW5jZS1zZWNyZXQtMQ==</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-Y2jQMzpvbX8Dlsho74jHPyxe0tXD2oja">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-Y2jQMzpvbX8Dlsho74jHPyxe0tXD2oja&#39;)">(3) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">AddClientIdToTokenEndpointRequest</div>
+                
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-Y2jQMzpvbX8Dlsho74jHPyxe0tXD2oja">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">grant_type</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">client_credentials</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">scope</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">openid</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">client_id</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">conformance-basic-1</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-q0nTkWTBySg4tThryQ4KbSozDkkjV5k4">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:36</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-q0nTkWTBySg4tThryQ4KbSozDkkjV5k4&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">CallTokenEndpoint</div>
+                <div class="log-msg">HTTP request</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-q0nTkWTBySg4tThryQ4KbSozDkkjV5k4">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">request_uri</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/token</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_method</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">POST</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;Accept&quot;: &quot;application/json&quot;,
+  &quot;Authorization&quot;: &quot;Basic Y29uZm9ybWFuY2UtYmFzaWMtMTpjb25mb3JtYW5jZS1zZWNyZXQtMQ\u003d\u003d&quot;,
+  &quot;Content-Type&quot;: &quot;application/x-www-form-urlencoded&quot;,
+  &quot;Content-Length&quot;: &quot;72&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">grant_type=client_credentials&amp;scope=openid&amp;client_id=conformance-basic-1</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-tEF1mGvKnDldVCJDNXkgnHFr8SAU3iMy">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-tEF1mGvKnDldVCJDNXkgnHFr8SAU3iMy&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        <span class="label bg-info">RESPONSE</span>
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">CallTokenEndpoint</div>
+                <div class="log-msg">HTTP response</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-tEF1mGvKnDldVCJDNXkgnHFr8SAU3iMy">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_code</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">200 OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_text</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;cache-control&quot;: &quot;no-store&quot;,
+  &quot;content-type&quot;: &quot;application/json;charset\u003dUTF-8&quot;,
+  &quot;pragma&quot;: &quot;no-cache&quot;,
+  &quot;x-cloud-trace-context&quot;: &quot;f42e15e32ff61908aaf1172368487c56&quot;,
+  &quot;date&quot;: &quot;Sun, 25 Jan 2026 19:22:37 GMT&quot;,
+  &quot;server&quot;: &quot;Google Frontend&quot;,
+  &quot;content-length&quot;: &quot;164&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">{&quot;access_token&quot;:&quot;ory_at_Ys2DgEW3BJft0h7rvRctXR-5rr5P_-ecgx2bFautIg8.HLFinKC7Y4U__pSzcDpGoT4cK89hoFF4--u3jw7-hsE&quot;,&quot;expires_in&quot;:3599,&quot;scope&quot;:&quot;&quot;,&quot;token_type&quot;:&quot;bearer&quot;}</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-McWS4lOl9Taem1MDhZ2zvkWwaDhKi6KS">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-McWS4lOl9Taem1MDhZ2zvkWwaDhKi6KS&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">CallTokenEndpoint</div>
+                <div class="log-msg">Parsed token endpoint response</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-McWS4lOl9Taem1MDhZ2zvkWwaDhKi6KS">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">access_token</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">ory_at_Ys2DgEW3BJft0h7rvRctXR-5rr5P_-ecgx2bFautIg8.HLFinKC7Y4U__pSzcDpGoT4cK89hoFF4--u3jw7-hsE</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">expires_in</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">3599</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">scope</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text"></pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">token_type</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">bearer</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-NnBRGSCgXHLRI5PFYgB19ojhmSJS2TMl">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">CheckIfTokenEndpointResponseError</div>
+                <div class="log-msg">No error from token endpoint</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-NnBRGSCgXHLRI5PFYgB19ojhmSJS2TMl">
+                    
+
+                    
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-GFwym4smQQr4wPX1cVgHMP1O5g1Ushx4">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-GFwym4smQQr4wPX1cVgHMP1O5g1Ushx4&#39;)">(1) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">CheckForAccessTokenValue</div>
+                <div class="log-msg">Found an access token</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-GFwym4smQQr4wPX1cVgHMP1O5g1Ushx4">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">access_token</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">ory_at_Ys2DgEW3BJft0h7rvRctXR-5rr5P_-ecgx2bFautIg8.HLFinKC7Y4U__pSzcDpGoT4cK89hoFF4--u3jw7-hsE</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-kagKHg3UKkvXXzRLVUXpJjMOo4VB2cEI">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-kagKHg3UKkvXXzRLVUXpJjMOo4VB2cEI&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">ExtractAccessTokenFromTokenResponse</div>
+                <div class="log-msg">Extracted the access token</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-kagKHg3UKkvXXzRLVUXpJjMOo4VB2cEI">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">value</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">ory_at_Ys2DgEW3BJft0h7rvRctXR-5rr5P_-ecgx2bFautIg8.HLFinKC7Y4U__pSzcDpGoT4cK89hoFF4--u3jw7-hsE</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">type</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">bearer</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-hQctxz8oAbeDZ9FGJ1lhKesIUM4h2Zq5">
+    <tbody>
+        <tr>
+            <td colspan="3" class="block-title" style="background-color:#118ab2">Clean stream environment if necessary</td>
+        </tr>
+    </tbody>
+    
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-LOZ2KjEUqOcU9qy0xJB6KSpcn268lpXi">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-LOZ2KjEUqOcU9qy0xJB6KSpcn268lpXi&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFReadStreamConfigCall</div>
+                <div class="log-msg">HTTP request</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-LOZ2KjEUqOcU9qy0xJB6KSpcn268lpXi">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">request_uri</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/stream</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_method</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">GET</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;Accept&quot;: &quot;application/json&quot;,
+  &quot;Authorization&quot;: &quot;bearer ory_at_Ys2DgEW3BJft0h7rvRctXR-5rr5P_-ecgx2bFautIg8.HLFinKC7Y4U__pSzcDpGoT4cK89hoFF4--u3jw7-hsE&quot;,
+  &quot;Content-Length&quot;: &quot;0&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text"></pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-ml5UbFaeE1nCvIkuCfzVs9cq5f4JoSu6">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-ml5UbFaeE1nCvIkuCfzVs9cq5f4JoSu6&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        <span class="label bg-info">RESPONSE</span>
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFReadStreamConfigCall</div>
+                <div class="log-msg">HTTP response</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-ml5UbFaeE1nCvIkuCfzVs9cq5f4JoSu6">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_code</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">200 OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_text</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">OK</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;content-type&quot;: &quot;application/json&quot;,
+  &quot;x-cloud-trace-context&quot;: &quot;27008414b857ea03844d894479a78d17&quot;,
+  &quot;date&quot;: &quot;Sun, 25 Jan 2026 19:22:37 GMT&quot;,
+  &quot;server&quot;: &quot;Google Frontend&quot;,
+  &quot;content-length&quot;: &quot;3&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">[]
+</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-S14kbfQFHB5lubiCAyETRzAY4GzfIpbT">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.github.io/sharedsignals/openid-caep-interoperability-profile-1_0.html#section-2.3.8.2">CAEPIOP-2.3.8.2</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFReadStreamConfigCall</div>
+                <div class="log-msg">Called resource endpoint</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-S14kbfQFHB5lubiCAyETRzAY4GzfIpbT">
+                    
+
+                    
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-qISUnJveIOMDMKssQ3jHw8ytRNop7YCx">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-qISUnJveIOMDMKssQ3jHw8ytRNop7YCx&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-7.1.1.2">OIDSSF-7.1.1.2</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">EnsureHttpStatusCodeIs200Or404</div>
+                <div class="log-msg">resource endpoint returned the expected http status</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-qISUnJveIOMDMKssQ3jHw8ytRNop7YCx">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">expected_status_codes</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  200,
+  404
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">http_status</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">200</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-rKaP5SuIMCaDIR3VSzR5ZfioCo0SLZvh">
+    <tbody>
+        <tr>
+            <td colspan="3" class="block-title" style="background-color:#03045e">Attempt to replace a Stream Configuration with invalid access token</td>
+        </tr>
+    </tbody>
+    
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-bmbbj841Va36lgOVIFHIyhi2dgyuWxcC">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFInjectInvalidAccessTokenOverride</div>
+                <div class="log-msg">Overrode access_token with invalid access_token</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-bmbbj841Va36lgOVIFHIyhi2dgyuWxcC">
+                    
+
+                    
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-njPYwGNNbGpk0mfjHiuZiQTTgUlSFXpy">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-njPYwGNNbGpk0mfjHiuZiQTTgUlSFXpy&#39;)">(1) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-8.1.1.1">OIDSSF-8.1.1.1</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFPrepareStreamConfigObject</div>
+                <div class="log-msg">Prepared stream config object</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-njPYwGNNbGpk0mfjHiuZiQTTgUlSFXpy">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">config</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;description&quot;: &quot;Stream for OIDF Conformance Test-Suite&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-AQ26LgQwDArjobAGcMCvOUJm5dHkliM5">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-AQ26LgQwDArjobAGcMCvOUJm5dHkliM5&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-8.1.1.1">OIDSSF-8.1.1.1</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFPrepareStreamConfigObjectAddRequestedEvents</div>
+                <div class="log-msg">Added &#39;events_requested&#39; to stream configuration</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-AQ26LgQwDArjobAGcMCvOUJm5dHkliM5">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">config</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;description&quot;: &quot;Stream for OIDF Conformance Test-Suite&quot;,
+  &quot;events_requested&quot;: [
+    &quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,
+    &quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;
+  ]
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">events_requested</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">[
+  &quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,
+  &quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;
+]</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-QONJtwOx9zX4loikAmUEbBMt4lvMhmaB">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-QONJtwOx9zX4loikAmUEbBMt4lvMhmaB&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-8.1.1.1">OIDSSF-8.1.1.1</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFPrepareStreamConfigObjectSetDeliveryMethod</div>
+                <div class="log-msg">Added &#39;delivery&#39; to stream configuration</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-QONJtwOx9zX4loikAmUEbBMt4lvMhmaB">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">delivery</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;method&quot;: &quot;urn:ietf:rfc:8936&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">config</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;description&quot;: &quot;Stream for OIDF Conformance Test-Suite&quot;,
+  &quot;events_requested&quot;: [
+    &quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,
+    &quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;
+  ],
+  &quot;delivery&quot;: {
+    &quot;method&quot;: &quot;urn:ietf:rfc:8936&quot;
+  }
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-1sApJS4hIy7Y3kTtDw4LcLiUCpoCoSiN">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:37</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-1sApJS4hIy7Y3kTtDw4LcLiUCpoCoSiN&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFReplaceStreamConfigCall</div>
+                <div class="log-msg">HTTP request</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-1sApJS4hIy7Y3kTtDw4LcLiUCpoCoSiN">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">request_uri</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">https://ssf-oidc-provider-dev-346948647218.asia-northeast1.run.app/ssf/stream</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_method</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">PUT</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;Accept&quot;: &quot;application/json&quot;,
+  &quot;Authorization&quot;: &quot;Bearer invalid&quot;,
+  &quot;Content-Type&quot;: &quot;application/json&quot;,
+  &quot;Content-Length&quot;: &quot;279&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">request_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">{&quot;description&quot;:&quot;Replaced Stream for Receiver OIDF Conformance Test-Suite&quot;,&quot;events_requested&quot;:[&quot;https://schemas.openid.net/secevent/caep/event-type/session-revoked&quot;,&quot;https://schemas.openid.net/secevent/caep/event-type/credential-change&quot;],&quot;delivery&quot;:{&quot;method&quot;:&quot;urn:ietf:rfc:8936&quot;}}</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-9GHDi7ym52LLvOrxKWN2c1NiJBUfBquu">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:38</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-9GHDi7ym52LLvOrxKWN2c1NiJBUfBquu&#39;)">(4) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                <span class="log-http">
+                        
+                        <span class="label bg-info">RESPONSE</span>
+                        
+                        
+                        
+                        
+                </span>
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFReplaceStreamConfigCall</div>
+                <div class="log-msg">HTTP response</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-9GHDi7ym52LLvOrxKWN2c1NiJBUfBquu">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_code</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">401 UNAUTHORIZED</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_status_text</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">Unauthorized</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_headers</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    <pre class="more-json prettyprint lang-javascript">{
+  &quot;content-type&quot;: &quot;application/problem+json&quot;,
+  &quot;www-authenticate&quot;: &quot;Bearer error\u003d\&quot;invalid_token\&quot;&quot;,
+  &quot;x-cloud-trace-context&quot;: &quot;d5cada0da4d17325a628f8ee9509c953&quot;,
+  &quot;date&quot;: &quot;Sun, 25 Jan 2026 19:22:38 GMT&quot;,
+  &quot;server&quot;: &quot;Google Frontend&quot;,
+  &quot;content-length&quot;: &quot;84&quot;
+}</pre>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">response_body</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">{&quot;type&quot;:&quot;about:blank&quot;,&quot;status&quot;:401,&quot;title&quot;:&quot;Unauthorized&quot;,&quot;detail&quot;:&quot;Invalid token&quot;}
+</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-xGs1suLIi21n4Eqdq5zXCTaEloUcRo4v">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:38</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-xGs1suLIi21n4Eqdq5zXCTaEloUcRo4v&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-8.1.1.4">OIDSSF-8.1.1.4</a><a class="label requirement" target="_blank" href="https://openid.github.io/sharedsignals/openid-caep-interoperability-profile-1_0.html#section-2.3.8.2">CAEPIOP-2.3.8.2</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFReplaceStreamConfigCall</div>
+                <div class="log-msg">Received error from the resource endpoint</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-xGs1suLIi21n4Eqdq5zXCTaEloUcRo4v">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">code</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">401</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">status</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">Unauthorized</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-ty0G2EIiyXPNe39o69qXOvS9EOFE3JS5">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:38</span>
+                
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-8.1.1.4">OIDSSF-8.1.1.4</a><a class="label requirement" target="_blank" href="https://openid.github.io/sharedsignals/openid-caep-interoperability-profile-1_0.html#section-2.3.8.2">CAEPIOP-2.3.8.2</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">OIDSSFReplaceStreamConfigCall</div>
+                <div class="log-msg">Called resource endpoint</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-ty0G2EIiyXPNe39o69qXOvS9EOFE3JS5">
+                    
+
+                    
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-esvtOXBczYuKpPp9ASFM6fCrzKVPw232">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:38</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-esvtOXBczYuKpPp9ASFM6fCrzKVPw232&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-success">SUCCESS</span>
+
+                
+
+                
+                <div>
+                    <a class="label requirement" target="_blank" href="https://openid.net/specs/openid-sharedsignals-framework-1_0-final.html#section-8.1.1.4">OIDSSF-8.1.1.4</a>
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">EnsureHttpStatusCodeIs401</div>
+                <div class="log-msg">replace stream configuration endpoint returned the expected http status</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-esvtOXBczYuKpPp9ASFM6fCrzKVPw232">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">expected_status</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">401</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">http_status</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">401</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-ZoWBRVNTq66zITZnmv3o1QF6HLRBvddb">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:38</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-ZoWBRVNTq66zITZnmv3o1QF6HLRBvddb&#39;)">(1) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                <span class="label result-finished">FINISHED</span>
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">openid-ssf-stream-control-error-replace-stream-with-invalid-token</div>
+                <div class="log-msg">Test has run to completion</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-ZoWBRVNTq66zITZnmv3o1QF6HLRBvddb">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">testmodule_result</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">PASSED</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+    <div class="log-item">
+<table cellpadding="0" cellspacing="0" id="rsQkYfITRquOEmv-lTKgS26aZ7dZAk9H3s6Z366duMNuq37V">
+    
+    <tbody>
+        <tr class="log-entry-title">
+
+            <td class="col-1">
+                <span>2026-01-25 19:22:39</span>
+                <div>
+                    <a class="more-btn" href="javascript:moreClicked(&#39;rsQkYfITRquOEmv-lTKgS26aZ7dZAk9H3s6Z366duMNuq37V&#39;)">(2) More</a>
+                </div>
+            </td>
+
+            <td class="col-2 labelCollection">
+                
+
+                
+
+                
+                <div>
+                    
+                </div>
+            </td>
+
+            <td class="col-3">
+                <div class="log-src">TEST-RUNNER</div>
+                <div class="log-msg">Alias has now been claimed by another test</div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3">
+                <div class="more" id="more_rsQkYfITRquOEmv-lTKgS26aZ7dZAk9H3s6Z366duMNuq37V">
+                    
+
+                    <table>
+                        <tr class="more-row">
+                            <td class="more-key">alias</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">ssf-oidc-provider-dev</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="more-row">
+                            <td class="more-key">new_test_id</td>
+                            <td class="more-value">
+                                <div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <pre class="more-text">keHCp0HLav5N46D</pre>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+</div>
+<a href="#testresultsheader" id="fixedtoplink">Test Results</a>
+</body>
+</html>

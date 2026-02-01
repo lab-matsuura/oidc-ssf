@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+    <style>
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-card .label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .stat-card.success .value { color: #28a745; }
+        .stat-card.danger .value { color: #dc3545; }
+        .stat-card.warning .value { color: #ffc107; }
+        .stat-card.info .value { color: #667eea; }
+        .filter-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-form select {
+            min-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>SSF Event Logs</h1>
+                <a href="/portal/ssf" class="btn btn-outline">Back to Streams</a>
+            </div>
+
+            {{if .Stats}}
+            <div class="stats-grid">
+                <div class="stat-card info">
+                    <div class="value">{{.Stats.Total}}</div>
+                    <div class="label">Total Events</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="value">{{.Stats.Sent}}</div>
+                    <div class="label">Delivered</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="value">{{.Stats.Pending}}</div>
+                    <div class="label">Pending</div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="value">{{.Stats.Failed}}</div>
+                    <div class="label">Failed</div>
+                </div>
+            </div>
+            {{end}}
+
+            <div class="card mb-3">
+                <form method="GET" action="/portal/ssf/log" class="filter-form">
+                    <select name="stream_id">
+                        <option value="">All Streams</option>
+                        {{range .Streams}}
+                        <option value="{{.ID}}" {{if eq $.StreamFilter .ID}}selected{{end}}>{{if .Description}}{{.Description}}{{else}}{{.EndpointURL}}{{end}}</option>
+                        {{end}}
+                    </select>
+                    <select name="status">
+                        <option value="">All Status</option>
+                        <option value="sent" {{if eq .StatusFilter "sent"}}selected{{end}}>Sent</option>
+                        <option value="queued" {{if eq .StatusFilter "queued"}}selected{{end}}>Queued</option>
+                        <option value="retry" {{if eq .StatusFilter "retry"}}selected{{end}}>Retry</option>
+                        <option value="failed" {{if eq .StatusFilter "failed"}}selected{{end}}>Failed</option>
+                    </select>
+                    <select name="event_type">
+                        <option value="">All Event Types</option>
+                        {{range .EventTypes}}
+                        <option value="{{.URI}}" {{if eq $.EventTypeFilter .URI}}selected{{end}}>{{.Name}}</option>
+                        {{end}}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    {{if or .StatusFilter .EventTypeFilter .StreamFilter}}
+                    <a href="/portal/ssf/log" class="btn btn-outline">Clear</a>
+                    {{end}}
+                </form>
+            </div>
+
+            <div class="card mb-3">
+                <p class="text-muted" style="margin: 0;">{{.TotalEvents}} events found</p>
+            </div>
+
+            {{if .EventLogs}}
+            <table class="portal-table">
+                <thead>
+                    <tr>
+                        <th>Event Type</th>
+                        <th>Subject</th>
+                        <th>Status</th>
+                        <th>Attempts</th>
+                        <th>Created</th>
+                        <th>Sent</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .EventLogs}}
+                    <tr>
+                        <td>
+                            <strong>{{.EventTypeName}}</strong>
+                            <br><code class="small" style="font-size: 10px; color: #888;">{{.JTI}}</code>
+                        </td>
+                        <td>
+                            {{if .SubjectIdentifier}}
+                                <code class="small">{{.SubjectIdentifier}}</code>
+                            {{else}}
+                                <span class="text-muted">-</span>
+                            {{end}}
+                        </td>
+                        <td>
+                            {{if eq .Status "sent"}}
+                                <span class="badge badge-success">sent</span>
+                            {{else if eq .Status "queued"}}
+                                <span class="badge badge-info">queued</span>
+                            {{else if eq .Status "failed"}}
+                                <span class="badge badge-danger">failed</span>
+                            {{else if eq .Status "retry"}}
+                                <span class="badge badge-warning">retry</span>
+                            {{else}}
+                                <span class="badge badge-secondary">{{.Status}}</span>
+                            {{end}}
+                        </td>
+                        <td>{{.Attempts}}</td>
+                        <td class="small">{{.CreatedAt}}</td>
+                        <td class="small">{{if .SentAt}}{{.SentAt}}{{else}}-{{end}}</td>
+                        <td>
+                            {{if .LastError}}
+                            <span class="text-danger small" title="{{.LastError}}">
+                                {{if gt (len .LastError) 50}}
+                                    {{slice .LastError 0 50}}...
+                                {{else}}
+                                    {{.LastError}}
+                                {{end}}
+                            </span>
+                            {{else}}
+                                -
+                            {{end}}
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+            {{if .ShowPagination}}
+            <div class="pagination">
+                {{if .HasPrevPage}}
+                <a href="/portal/ssf/log?page={{.PrevPage}}{{if .StreamFilter}}&stream_id={{.StreamFilter}}{{end}}{{if .StatusFilter}}&status={{.StatusFilter}}{{end}}{{if .EventTypeFilter}}&event_type={{.EventTypeFilter}}{{end}}">&laquo; Previous</a>
+                {{end}}
+
+                {{range $page := .Pages}}
+                {{if eq $page $.CurrentPage}}
+                <span class="active">{{$page}}</span>
+                {{else}}
+                <a href="/portal/ssf/log?page={{$page}}{{if $.StreamFilter}}&stream_id={{$.StreamFilter}}{{end}}{{if $.StatusFilter}}&status={{$.StatusFilter}}{{end}}{{if $.EventTypeFilter}}&event_type={{$.EventTypeFilter}}{{end}}">{{$page}}</a>
+                {{end}}
+                {{end}}
+
+                {{if .HasNextPage}}
+                <a href="/portal/ssf/log?page={{.NextPage}}{{if .StreamFilter}}&stream_id={{.StreamFilter}}{{end}}{{if .StatusFilter}}&status={{.StatusFilter}}{{end}}{{if .EventTypeFilter}}&event_type={{.EventTypeFilter}}{{end}}">Next &raquo;</a>
+                {{end}}
+            </div>
+            {{end}}
+
+            {{else}}
+            <div class="card text-center">
+                <p class="text-muted">No event logs found.</p>
+            </div>
+            {{end}}
+        </main>
+    </div>
+</body>
+</html>

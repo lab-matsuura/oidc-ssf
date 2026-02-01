@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>OAuth Clients</h1>
+                <a href="/portal/clients/new" class="btn btn-primary">Create New Client</a>
+            </div>
+
+            {{if .Message}}
+            <div class="alert alert-success">{{.Message}}</div>
+            {{end}}
+
+            <table class="portal-table">
+                <thead>
+                    <tr>
+                        <th>Client ID</th>
+                        <th>Type</th>
+                        <th>Redirect URIs</th>
+                        <th>Scopes</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Clients}}
+                    <tr>
+                        <td><code>{{.ID}}</code></td>
+                        <td>
+                            {{if .Public}}
+                            <span class="badge badge-info">Public</span>
+                            {{else}}
+                            <span class="badge badge-secondary">Confidential</span>
+                            {{end}}
+                        </td>
+                        <td>
+                            {{range .RedirectURIs}}
+                            <code class="small">{{.}}</code><br>
+                            {{end}}
+                        </td>
+                        <td>
+                            {{range .Scopes}}
+                            <span class="badge badge-light">{{.}}</span>
+                            {{end}}
+                        </td>
+                        <td>{{.CreatedAt}}</td>
+                        <td>
+                            <a href="/portal/clients/{{.ID}}" class="btn btn-sm btn-outline">Edit</a>
+                            <form action="/portal/clients/{{.ID}}/delete" method="POST" style="display:inline" onsubmit="return confirm('Delete client {{.ID}}?')">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No clients registered yet.</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </main>
+    </div>
+</body>
+</html>

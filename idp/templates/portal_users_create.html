@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - IdP Portal</title>
+    {{template "portal_styles"}}
+</head>
+<body>
+    <div class="portal-layout">
+        {{template "portal_sidebar" .}}
+        <main class="portal-content">
+            <div class="portal-header">
+                <h1>Create New User</h1>
+                <a href="/portal/users" class="btn btn-outline">Back to List</a>
+            </div>
+
+            {{if .Error}}
+            <div class="alert alert-danger">{{.Error}}</div>
+            {{end}}
+
+            <div class="card">
+                <form method="POST" action="/portal/users/create">
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" id="username" name="username" required minlength="3" pattern="[a-zA-Z0-9_-]+" value="{{.FormUsername}}" placeholder="johndoe">
+                        <small class="text-muted">At least 3 characters. Alphanumeric, hyphens, and underscores only.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required minlength="6" placeholder="Enter password">
+                        <small class="text-muted">At least 6 characters.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required value="{{.FormEmail}}" placeholder="user@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="display_name">Display Name</label>
+                        <input type="text" id="display_name" name="display_name" value="{{.FormDisplayName}}" placeholder="John Doe">
+                        <small class="text-muted">Optional. Full name displayed in the UI.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role *</label>
+                        <select id="role" name="role">
+                            <option value="user" {{if eq .FormRole "user"}}selected{{end}}>User</option>
+                            <option value="admin" {{if eq .FormRole "admin"}}selected{{end}}>Admin</option>
+                        </select>
+                        <small class="text-muted">Admin users can access the management console.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
